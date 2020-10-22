@@ -15,12 +15,12 @@ let vm = new Vue({
     data() {
         return{
             posts: [],
-            search:'',
             field: 'skateboarding',
         }
     },
     methods: {
         makePostsArray(x) {
+            this.search = x;
             this.posts = [];
             url = 'https://www.reddit.com/r/' + x + '/.json';
 
@@ -53,10 +53,6 @@ let vm = new Vue({
 
             this.field = '';
         },
-
-        getSearch(){
-            return this.search;
-        }
 
     }
 });
