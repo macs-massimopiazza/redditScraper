@@ -11,6 +11,10 @@
             margin: 0 auto;
             text-align: center;
         }
+
+        input:hover, input:active, input, button:hover, button:active, button  {
+            outline: none
+        }
         h1 {
             font-weight: 900;
             background: rgb(255,165,40);
@@ -21,6 +25,7 @@
             position: relative;
             display: inline-block;
             border-bottom: 5px solid #666;
+            margin-bottom: 30px;
         }
 
         #feedContainer {
@@ -37,7 +42,7 @@
         }
 
 
-        .btns a button {
+        .btns a button, #btnField {
             border: 0;
             border-radius: 5px;
             padding: 6px 10px;
@@ -46,8 +51,11 @@
             color: #fff;
             transition: all 0.5;
         }
-        .btns a button:active {
+        .btns a button:active, #btnField:active {
             transform: translateY(4px);
+        }
+        .btns a button:hover, #btnField:hover {
+            transform: translateY(2px);
         }
 
         .btns a.urlMedia button {
@@ -58,6 +66,23 @@
         }
         .btns a.linkDownload button {
             background: linear-gradient(270deg,  rgb(233, 19, 19) 0%, rgba(255,165,40,1) 65%);
+        }
+
+        #btnField {
+            background: linear-gradient(270deg, rgba(255,165,40,1) 13%, rgba(251,255,55,1) 29%, rgba(8,255,90,1) 50%, rgba(35,251,255,1) 71%, rgba(189,8,255,1) 100%);
+            padding: 8px 20px;
+            margin-top: 10px;
+        }
+
+        #inputField {
+            border: 0;
+            border-bottom: 5px solid #666;
+            font-weight: 900;
+            background: rgb(255,165,40);
+            background: linear-gradient(270deg, rgba(255,165,40,1) 13%, rgba(251,255,55,1) 29%, rgba(8,255,90,1) 50%, rgba(35,251,255,1) 71%, rgba(189,8,255,1) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .post {
@@ -85,44 +110,59 @@
             font-weight: 700;
         }
 
+        #load {
+            margin-top: 60px;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="mainContainer">
-        <h1>Reddit scraper</h1>
+        <h1>Reddit scraper</h1><br>
+        <input type="text" id="inputField" value="skateboarding"><br><button id="btnField">Scrape</button>
     </div>
+    
     <div id="feedContainer">
+        <img id="load" src="load.gif">
         
     </div>
 
     <script>
-        let field = "skateboarding";
-        let url = 'https://www.reddit.com/r/' + field + '/.json?limit=50';
-        let posts = makePostsArray(url);
-        setTimeout(x => {
-            let feedContainer = document.getElementById("feedContainer");
-            var containerHTML = "";
-            posts.forEach((post, index) =>{
-                containerHTML += '<div class="post">';
-                containerHTML += '<div class="top">';
-                containerHTML +=  `<video width="384" height="216" controls>`;
-                containerHTML += `<source src="${post.urlMedia}" type="video/mp4">`;
-                containerHTML += '</video>';
-                containerHTML +=  "</div>";
-                containerHTML += '<div class="bottom">';
-                containerHTML += `<p class="autore">${post.autore}</p>`;
-                containerHTML += `<p class="titolo">${post.titolo}</p>`;
-                containerHTML += `<p class="ups">🔼${post.upVotes}</p>`;
-                containerHTML += '<div class="btns">'
-                containerHTML += `<a class="urlMedia" target="_blank" href="${post.urlMedia}"><button>Link Video</button></a>`;
-                containerHTML += `<a class="linkPost" target="_blank" href="${post.linkPost}"><button>Link Post</button></a>`;
-                containerHTML += `<a class="linkDownload" target="_blank" href="${post.linkDownload}"><button>Link 💾</button></a>`;
-                containerHTML +=  "</div>";
-                containerHTML +=  "</div>";
-                containerHTML +=  "</div>";
-            });
-            feedContainer.innerHTML = containerHTML;
-        }, 3000 );
+        let input = document.getElementById('inputField');
+        let btnField = document.getElementById('btnField');
+        let loadGIF = document.getElementById('load');
+        console.log(loadGIF);
+        btnField.onclick = function(){
+            loadGIF.style.display = "block";
+            let field = input.value;
+            let url = 'https://www.reddit.com/r/' + field + '/.json?limit=50';
+            let posts = makePostsArray(url);
+             setTimeout(x => {
+                let feedContainer = document.getElementById("feedContainer");
+                var containerHTML = "";
+                posts.forEach((post, index) =>{
+                    containerHTML += '<div class="post">';
+                    containerHTML += '<div class="top">';
+                    containerHTML +=  `<video width="384" height="216" controls>`;
+                    containerHTML += `<source src="${post.urlMedia}" type="video/mp4">`;
+                    containerHTML += '</video>';
+                    containerHTML +=  "</div>";
+                    containerHTML += '<div class="bottom">';
+                    containerHTML += `<p class="autore">${post.autore}</p>`;
+                    containerHTML += `<p class="titolo">${post.titolo}</p>`;
+                    containerHTML += `<p class="ups">🔼${post.upVotes}</p>`;
+                    containerHTML += '<div class="btns">'
+                    containerHTML += `<a class="urlMedia" target="_blank" href="${post.urlMedia}"><button>Link Video</button></a>`;
+                    containerHTML += `<a class="linkPost" target="_blank" href="${post.linkPost}"><button>Link Post</button></a>`;
+                    containerHTML += `<a class="linkDownload" target="_blank" href="${post.linkDownload}"><button>Link 💾</button></a>`;
+                    containerHTML +=  "</div>";
+                    containerHTML +=  "</div>";
+                    containerHTML +=  "</div>";
+                });
+                feedContainer.innerHTML = containerHTML;
+                loadGIF.style.display = "none";
+            }, 2000 );
+            };
 
         function makePostsArray(url) {
             var posts = [];
