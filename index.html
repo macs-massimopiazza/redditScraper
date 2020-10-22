@@ -20,11 +20,11 @@
         <div>
             <label>Sub reddit: </label>
             <input type="text" name="field" id="field" v-model="field">
-            <div @click="this.search = field; makePostsArray(this.search)" class="btn btn-success">esporta</div>
+            <div @click="makePostsArray(field)" class="btn btn-success">esporta</div>
         </div>
         
         <hr>
-        <div>Video trovati : <b>{{this.posts.length}}</b></div>
+        <div>Video trovati {{search !== undefined ? ' per "' + search + '"' : ''}}: <b>{{this.posts.length}}</b></div>
         <div v-if="this.posts.length === 0" class="no-response">
             Mi dispiace ma non ho trovato nulla :(<br>
             Fai una nuova ricerca, broooo
