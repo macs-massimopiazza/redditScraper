@@ -52,10 +52,15 @@ h1 {
 }
 
 .post {
+    display: inline-block;
+
+    width: 400px;
+
+    margin-bottom: 30px;
+
     border: 5px solid black;
     border-radius: 5px;
-    margin: 10px;
-    max-width: 390px;
+    padding: 10px;
 }
 
 .post .bottom {
@@ -74,4 +79,18 @@ h1 {
 
 .post .autore {
     font-weight: 700;
+}
+
+.no-response{
+
+    text-align: center;
+    width: fit-content;
+
+    padding: 40px;
+    border: solid 1px grey;
+
+    color: grey;
+    font-weight: 100;
+
+    
 }
