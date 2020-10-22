@@ -23,6 +23,68 @@
             border-bottom: 5px solid #666;
         }
 
+        #feedContainer {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .btns {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+
+        .btns a button {
+            border: 0;
+            border-radius: 5px;
+            padding: 6px 10px;
+            margin: 0 5px;
+            font-weight: 700;
+            color: #fff;
+            transition: all 0.5;
+        }
+        .btns a button:active {
+            transform: translateY(4px);
+        }
+
+        .btns a.urlMedia button {
+            background: linear-gradient(270deg, rgba(35,251,255,1) 20%, rgba(189,8,255,1) 70%);
+        }
+        .btns a.linkPost button {
+            background: linear-gradient(270deg,rgba(251,255,55,1) 30%, rgba(8,255,90,1) 100%);
+        }
+        .btns a.linkDownload button {
+            background: linear-gradient(270deg,  rgb(233, 19, 19) 0%, rgba(255,165,40,1) 65%);
+        }
+
+        .post {
+            border: 5px solid black;
+            border-radius: 5px;
+            margin: 10px;
+            max-width: 390px;
+        }
+
+        .post .bottom {
+            padding: 20px;
+        }
+
+        .post .top {
+            text-align: center;
+        }
+
+        .post video {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .post .autore {
+            font-weight: 700;
+        }
+
     </style>
 </head>
 <body>
@@ -35,21 +97,33 @@
 
     <script>
         let field = "skateboarding";
-        let url = 'https://www.reddit.com/r/' + field + '/.json?limit=20';
+        let url = 'https://www.reddit.com/r/' + field + '/.json?limit=50';
         let posts = makePostsArray(url);
         setTimeout(x => {
             let feedContainer = document.getElementById("feedContainer");
+            var containerHTML = "";
             posts.forEach((post, index) =>{
-                let containerHTML = '<div class="">';
-                containerHTML +=  `<video width="${post.width/5}" height="${post.height/5}" controls>`;
+                containerHTML += '<div class="post">';
+                containerHTML += '<div class="top">';
+                containerHTML +=  `<video width="384" height="216" controls>`;
                 containerHTML += `<source src="${post.urlMedia}" type="video/mp4">`;
-                containerHTML+= '</video>';
+                containerHTML += '</video>';
                 containerHTML +=  "</div>";
-                console.log(containerHTML);
-                feedContainer.appendChild = containerHTML;
+                containerHTML += '<div class="bottom">';
+                containerHTML += `<p class="autore">${post.autore}</p>`;
+                containerHTML += `<p class="titolo">${post.titolo}</p>`;
+                containerHTML += `<p class="ups">🔼${post.upVotes}</p>`;
+                containerHTML += '<div class="btns">'
+                containerHTML += `<a class="urlMedia" target="_blank" href="${post.urlMedia}"><button>Link Video</button></a>`;
+                containerHTML += `<a class="linkPost" target="_blank" href="${post.linkPost}"><button>Link Post</button></a>`;
+                containerHTML += `<a class="linkDownload" target="_blank" href="${post.linkDownload}"><button>Link 💾</button></a>`;
+                containerHTML +=  "</div>";
+                containerHTML +=  "</div>";
+                containerHTML +=  "</div>";
             });
-        }, 1000 );
-        
+            feedContainer.innerHTML = containerHTML;
+        }, 3000 );
+
         function makePostsArray(url) {
             var posts = [];
             var postObj = {};
