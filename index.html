@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 
-    <script src="jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>    
 </head>
 <body>
@@ -21,25 +20,32 @@
         <div>
             <label>Sub reddit: </label>
             <input type="text" name="field" id="field" v-model="field">
-            <div @click="makePostsArray(field)">esporta</div>
+            <div @click="this.search = field; makePostsArray(this.search)" class="btn btn-success">esporta</div>
         </div>
         
         <hr>
+        <div>Video trovati : <b>{{this.posts.length}}</b></div>
+        <div v-if="this.posts.length === 0" class="no-response">
+            Mi dispiace ma non ho trovato nulla :(<br>
+            Fai una nuova ricerca, broooo
+        </div>
 
-        <div class="post" v-for="ele in this.posts">
-            <div class="top">
-                <video width="384" height="216" controls>
-                    <source v-bind:src="ele.urlMedia" type="video/mp4">
-                </video>
-            </div>
-            <div class="bottom">
-                <p class="autore">{{ele.autore}}</p>
-                <p class="titolo">{{ele.titolo}}</p>
-                <p class="ups">🔼{{ele.upVotes}}</p>
-                <div class="btns">
-                    <a class="urlMedia"     target="_blank" v-bind:href="ele.urlMedia"><button>Link Video</button></a>
-                    <a class="linkPost"     target="_blank" v-bind:href="ele.linkPost"><button>Link Post</button></a>
-                    <a class="linkDownload" target="_blank" v-bind:href="ele.linkDownload"><button>Link 💾</button></a>
+        <div id="feedContainer">
+            <div class="post" v-for="ele in this.posts">
+                <div class="top">
+                    <video width="384" height="216" controls>
+                        <source v-bind:src="ele.urlMedia" type="video/mp4">
+                    </video>
+                </div>
+                <div class="bottom">
+                    <p class="autore">{{ele.autore}}</p>
+                    <p class="titolo">{{ele.titolo}}</p>
+                    <p class="ups">🔼{{ele.upVotes}}</p>
+                    <div class="btns">
+                        <a class="urlMedia"     target="_blank" v-bind:href="ele.urlMedia"><button>Link Video</button></a>
+                        <a class="linkPost"     target="_blank" v-bind:href="ele.linkPost"><button>Link Post</button></a>
+                        <a class="linkDownload" target="_blank" v-bind:href="ele.linkDownload"><button>Link 💾</button></a>
+                    </div>
                 </div>
             </div>
         </div>
