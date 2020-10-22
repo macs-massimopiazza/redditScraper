@@ -15,6 +15,7 @@ let vm = new Vue({
     data() {
         return{
             posts: [],
+            search:'',
             field: 'skateboarding',
         }
     },
@@ -45,13 +46,17 @@ let vm = new Vue({
                             "width": me.secure_media.reddit_video.width,
                         };
                         this.posts.push(postObj);
-                        console.log(postObj);
                     }  
-                });   
+                });
+                // console.log(this.posts)
             });
 
             this.field = '';
         },
+
+        getSearch(){
+            return this.search;
+        }
 
     }
 });
