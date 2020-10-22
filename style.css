@@ -84,7 +84,8 @@ h1 {
 .no-response{
 
     text-align: center;
-    width: fit-content;
+    width: stretch;
+    margin: 20px;
 
     padding: 40px;
     border: solid 1px grey;
