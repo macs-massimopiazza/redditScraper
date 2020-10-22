@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>r/scraper🥳</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="jquery-3.5.1.min.js"></script>
+    <style>
+        .mainContainer {
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-weight: 900;
+            background: rgb(255,165,40);
+            background: linear-gradient(270deg, rgba(255,165,40,1) 13%, rgba(251,255,55,1) 29%, rgba(8,255,90,1) 50%, rgba(35,251,255,1) 71%, rgba(189,8,255,1) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            border-bottom: 5px solid #666;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="mainContainer">
+        <h1>Reddit scraper</h1>
+    </div>
+    <div id="feedContainer">
+        
+    </div>
+    
+    <script>
+        let field = "skateboarding";
+        let url = 'https://www.reddit.com/r/' + field + '/.json?limit=20';
+        let posts = makePostsArray(url);
+        setTimeout(x => {
+            let feedContainer = document.getElementById("feedContainer");
+            posts.forEach((post, index) =>{
+                let containerHTML = '<div class="">';
+                containerHTML +=  `<video width="${post.width/5}" height="${post.height/5}" controls>`;
+                containerHTML += `<source src="${post.urlMedia}" type="video/mp4">`;
+                containerHTML+= '</video>';
+                containerHTML +=  "</div>";
+                console.log(containerHTML);
+                feedContainer.appendChild = containerHTML;
+            });
+        }, 1000 );
+
+        function makePostsArray(url) {
+            var posts = [];
+            var postObj = {};
+            var array = [];
+            $.getJSON(url , function(content) {
+                let postList = content.data.children; 
+                //console.log(postList);
+                postList.forEach(post => {
+                    if(post.data.secure_media != null && post.data.is_video == true && post.data.author != "AutoModerator") {
+                        postObj = {
+                            "titolo": post.data.title,
+                            "autore": post.data.author,
+                            "linkPost": post.data.url,
+                            "linkDownload": "https://viddit.red/?url=" + post.data.url.replace(/(^\w+:|^)\/\//, ''),
+                            "upVotes": post.data.ups,
+                            "isVideo": post.data.is_video,
+                            "urlMedia": post.data.secure_media.reddit_video.fallback_url,
+                            "height": post.data.secure_media.reddit_video.height,
+                            "width": post.data.secure_media.reddit_video.width,
+                        };
+                        posts.push(postObj);
+                    }     
+                });
+            });
+            return posts;
+        };
+    </script>
+</body>
+</html>
