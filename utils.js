@@ -15,6 +15,7 @@ let vm = new Vue({
     data() {
         return{
             posts: [],
+            search: undefined,
             field: 'skateboarding',
         }
     },
