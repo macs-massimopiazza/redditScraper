@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="style.css">
 
     <script src="jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>    
 </head>
 <body>
     <div class="mainContainer">
@@ -46,52 +45,8 @@
         </div>
     </div>
 
-    <script>
-        let vm = new Vue({
-            el: '#app',
-            data() {
-                return{
-                    posts: [],
-                    field: 'skateboarding',
-                }
-            },
-            methods: {
-                makePostsArray(x) {
-                    this.posts = [];
-                    url = 'https://www.reddit.com/r/' + x + '/.json';
 
-                    $.getJSON(url).then(response => {
+    <script src="utils.js"></script>
 
-                        console.log('response: ', response);
-                        response.data.children.forEach(post => {
-                            const me = post.data;
-                            if (
-                                me.secure_media !== null &&
-                                me.is_video === true &&
-                                me.author != "AutoModerator"
-                            ) {
-                                const postObj = {
-                                    "titolo": me.title,
-                                    "autore": me.author,
-                                    "linkPost": me.url,
-                                    "linkDownload": "https://viddit.red/?url=" + me.url.replace(/(^\w+:|^)\/\//, ''),
-                                    "upVotes": me.ups,
-                                    "isVideo": me.is_video,
-                                    "urlMedia": me.secure_media.reddit_video.fallback_url,
-                                    "height": me.secure_media.reddit_video.height,
-                                    "width": me.secure_media.reddit_video.width,
-                                };
-                                this.posts.push(postObj);
-                                console.log(postObj);
-                            }  
-                        });   
-                    });
-
-                    this.field = '';
-                },
-
-            }
-        });
-    </script>
 </body>
 </html>
